@@ -47,7 +47,7 @@ with col2:
         # Plot the data
         st.subheader("Confidence Interval Visualization")
 
-        fig, ax = plt.subplots(figsize=(8, 4))
+        fig, ax = plt.subplots(figsize=(12, 6))
         bar_width = 0.4
         bar_center = 1  # position of the bar on the x-axis
 
@@ -71,7 +71,14 @@ with col2:
         # Display legend
         ax.legend()
 
-        # Adjust limits to provide some space around the bars
-        ax.set_ylim(min(lower_limit, sample_mean) - abs(margin_of_error) * 0.5, max(upper_limit, sample_mean) + abs(margin_of_error) * 0.5)
+        # Slider for number of bins (used for adjusting y-axis limits)
+        num_bins = st.slider("Number of Y-Axis Bins", min_value=1, max_value=20, value=5)
+        
+        # Adjust y-axis limits based on number of bins
+        y_min = min(lower_limit, sample_mean) - abs(margin_of_error) * 0.5
+        y_max = max(upper_limit, sample_mean) + abs(margin_of_error) * 0.5
+        y_range = y_max - y_min
+        bin_width = y_range / num_bins
+        ax.set_ylim(y_min - bin_width, y_max + bin_width)
 
         st.pyplot(fig)
