@@ -85,7 +85,8 @@ st.write(""" - Confidence level, usually expressed as a percentage like 95%, ind
 the true value lies within the interval. """)
 
 st.write("**Confidence Interval = Point Estimate   +    Margin of Error** ")
-
+st.write(""" - A point estimate is a single value, calculated from a sample, that serves as the best guess or approximation for an unknown population parameter, such as the mean or standard 
+deviation. Point estimates are often used in statistics when we want to make inferences about a population based on a sample. """)
 st.header("Confidence Intervals for Sample Means with 1000 Simulations")
 
 # Input widgets for various parameters
