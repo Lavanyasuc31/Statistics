@@ -76,7 +76,17 @@ def plot_candlestick_intervals(num_samples, sample_size, population_mean, popula
     st.dataframe(interval_data)
 
 # Streamlit UI
-st.title("Candlestick Plot of Confidence Intervals for Sample Means with 1000 Simulations")
+st.title("Confidence Interval")
+st.subheader("Confidence Interval")
+st.write(""" - Confidence interval, in simple words, is a range of values within which we expect a particular 
+population parameter, like a mean, to fall. It's a way to express the uncertainty around an estimate obtained from a sample of data. """)
+st.subheader("Confidence Level")
+st.write(""" - Confidence level, usually expressed as a percentage like 95%, indicates how sure we are that 
+the true value lies within the interval. """)
+
+st.write("**Confidence Interval = Point Estimate   +    Margin of Error** ")
+
+st.header("Confidence Intervals for Sample Means with 1000 Simulations")
 
 # Input widgets for various parameters
 sample_size = st.slider("Sample Size", min_value=1, max_value=500, value=30)

@@ -37,7 +37,18 @@ def plot_clt(population_type, sample_size, num_samples=1000):
     st.pyplot(fig)
 
 # Streamlit UI
-st.title("Central Limit Theorem Demonstration")
+
+st.title('Central Limit Theorem')
+st.write("""The Central Limit Theorem (CLT) states that the distribution of the sample means of a large 
+number of independent and identically distributed random variables will approach a normal 
+distribution, regardless of the underlying distribution of the variables.""")
+
+st.subheader("""The conditions required for the CLT to hold are: """)
+st.write("1. The sample size is large enough, typically greater than or equal to 30. ")
+st.write("2. The sample is drawn from a finite population or an infinite population with a finite variance. ")
+st.write('3. The random variables in the sample are independent and identically distributed.')
+
+st.header("Central Limit Theorem Demonstration")
 
 # Dropdown for population type
 population_type = st.selectbox(
@@ -50,3 +61,9 @@ sample_size = st.slider("Sample Size", min_value=1, max_value=500, value=30)
 
 # Generate and plot the graphs
 plot_clt(population_type, sample_size)
+
+
+
+
+
+st.write("""The CLT is important in statistics and machine learning because it allows us to  make probabilistic inferences about a population based on a sample of data. For  example, we can use the CLT to construct confidence intervals, perform  hypothesis tests, and make predictions about the population mean based on the sample data. The CLT also provides a theoretical justification for many commonly used statistical techniques, such as t-tests, ANOVA, and linear regression. """)
