@@ -17,8 +17,6 @@ def plot_clt(population_type, sample_size, num_samples=1000):
         population = np.random.binomial(n=10, p=0.5, size=10000)
     elif population_type == "Poisson":
         population = np.random.poisson(lam=3, size=10000)
-    elif population_type == "Beta":
-        population = np.random.beta(a=2, b=5, size=10000)
     elif population_type == "Bernoulli":
         population = np.random.binomial(n=1, p=0.5, size=10000)
     elif population_type == "Pareto":
