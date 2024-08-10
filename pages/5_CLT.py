@@ -61,7 +61,7 @@ st.header("Central Limit Theorem Demonstration")
 # Dropdown for population type
 population_type = st.selectbox(
     "Select Population Distribution",
-    ["Normal", "Uniform", "Exponential", "Binomial", "Poisson", "Beta", "Bernoulli", "Pareto", "Log-Normal"]
+    ["Normal", "Uniform", "Exponential", "Binomial", "Poisson", "Bernoulli", "Pareto", "Log-Normal"]
 )
 
 # Slider for sample size
