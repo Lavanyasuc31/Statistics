@@ -6,7 +6,7 @@ import streamlit as st
 # Set the random seed for reproducibility
 np.random.seed(42)
 
-def plot_clt(population_type, sample_size, num_samples=1000):
+def plot_clt(population_type, sample_size, num_samples):
     if population_type == "Normal":
         population = np.random.normal(loc=0, scale=1, size=10000)
     elif population_type == "Uniform":
@@ -67,12 +67,14 @@ population_type = st.selectbox(
 # Slider for sample size
 sample_size = st.slider("Sample Size", min_value=1, max_value=500, value=30)
 
+# Slider for number of samples
+num_samples = st.slider("Number of Samples", min_value=100, max_value=5000, value=1000, step=100)
+
 # Generate and plot the graphs
-plot_clt(population_type, sample_size)
+plot_clt(population_type, sample_size, num_samples)
 
 st.write("""The CLT is important in statistics and machine learning because it allows us to make 
 probabilistic inferences about a population based on a sample of data. For example, we can use the CLT 
 to construct confidence intervals, perform hypothesis tests, and make predictions about the population 
 mean based on the sample data. The CLT also provides a theoretical justification for many commonly used 
 statistical techniques, such as t-tests, ANOVA, and linear regression.""")
-

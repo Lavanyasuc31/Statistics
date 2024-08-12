@@ -7,46 +7,38 @@ st.header('What is Exponential Distribution?')
 st.write('The Exponential Distribution is a continuous probability distribution that is often used to model the time between events in a Poisson process. It is defined by a single rate parameter, \( \lambda \), which is the rate of events per unit time.')
 st.write('The Exponential Distribution is often used to model waiting times or lifetimes of objects.')
 
-def plot_exponential_distributions():
+def plot_exponential_distribution(lambda_):
     """
-    Plot the Exponential distribution curves for different rate (λ) values.
+    Plot the Exponential distribution curve for a specific rate (λ) value.
     """
-    lambdas = [0.5, 1, 2]
-    colors = ['blue', 'green', 'red']
-    labels = [r'$\lambda=0.5$', r'$\lambda=1$', r'$\lambda=2$']
-    
     max_x = 10  # Maximum x value to display
-    
     x = np.linspace(0, max_x, 1000)
     
     fig, ax = plt.subplots(1, 2, figsize=(12, 5))
 
-    # Plot PDFs
-    for lambda_, color, label in zip(lambdas, colors, labels):
-        y = expon.pdf(x, scale=1/lambda_)
-        ax[0].plot(x, y, label=label, color=color)
-
+    # Plot PDF
+    pdf_y = expon.pdf(x, scale=1/lambda_)
+    ax[0].plot(x, pdf_y, label=f'λ={lambda_}', color='blue')
     ax[0].set_xlabel('Time (x)')
     ax[0].set_ylabel('Probability Density (PDF)')
-    ax[0].legend(loc='upper right')
-    ax[0].set_title('Exponential Distribution PDF')
+    ax[0].set_title(f'Exponential Distribution PDF (λ={lambda_})')
 
-    # Plot CDFs
-    for lambda_, color, label in zip(lambdas, colors, labels):
-        y = expon.cdf(x, scale=1/lambda_)
-        ax[1].plot(x, y, label=label, color=color)
-
+    # Plot CDF
+    cdf_y = expon.cdf(x, scale=1/lambda_)
+    ax[1].plot(x, cdf_y, label=f'λ={lambda_}', color='green')
     ax[1].set_xlabel('Time (x)')
     ax[1].set_ylabel('Cumulative Distribution Function (CDF)')
-    ax[1].legend(loc='lower right')
-    ax[1].set_title('Exponential Distribution CDF')
+    ax[1].set_title(f'Exponential Distribution CDF (λ={lambda_})')
 
     st.pyplot(fig)
 
 # Streamlit app
-st.title('Exponential Distribution Curves')
+st.title('Interactive Exponential Distribution')
 
-plot_exponential_distributions()
+# Slider for lambda value
+lambda_value = st.slider("Select λ (Rate of Events)", min_value=0.1, max_value=10.0, value=1.0, step=0.1)
+
+plot_exponential_distribution(lambda_value)
 
 st.title('Exponential Distribution Formulas')
 
@@ -67,4 +59,3 @@ st.latex(r'''
     0 & x < 0
     \end{cases}
     ''')
-

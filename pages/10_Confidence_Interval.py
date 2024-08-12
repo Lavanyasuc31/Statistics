@@ -7,24 +7,20 @@ from scipy import stats
 # Set the random seed for reproducibility
 np.random.seed(42)
 
-def compute_confidence_interval(sample, confidence=0.95, test_type='t'):
+def compute_confidence_interval(sample, confidence=0.95, test_type='z'):
     """
-    Compute the confidence interval for a sample using either a t-test or z-test.
+    Compute the confidence interval for a sample using the z-test.
     """
     n = len(sample)
     mean = np.mean(sample)
     sem = stats.sem(sample)  # Standard error of the mean
     
-    if test_type == 'z':
-        # Z-test uses normal distribution
-        interval = sem * stats.norm.ppf((1 + confidence) / 2.)
-    else:
-        # T-test uses t distribution
-        interval = sem * stats.t.ppf((1 + confidence) / 2., n-1)
+    # Z-test uses normal distribution
+    interval = sem * stats.norm.ppf((1 + confidence) / 2.)
     
     return mean, mean - interval, mean + interval, interval * 2  # Also return the interval width
 
-def plot_candlestick_intervals(num_samples, sample_size, population_mean, population_std, confidence_level, test_type, x_axis_frequency):
+def plot_candlestick_intervals(num_samples, sample_size, population_mean, population_std, confidence_level, x_axis_frequency):
     # Generate population
     population = np.random.normal(loc=population_mean, scale=population_std, size=10000)
     sample_means = []
@@ -35,7 +31,7 @@ def plot_candlestick_intervals(num_samples, sample_size, population_mean, popula
     
     for _ in range(num_samples):
         sample = np.random.choice(population, sample_size)
-        mean, lower_bound, upper_bound, interval_width = compute_confidence_interval(sample, confidence_level, test_type)
+        mean, lower_bound, upper_bound, interval_width = compute_confidence_interval(sample, confidence_level)
         sample_means.append(mean)
         lower_bounds.append(lower_bound)
         upper_bounds.append(upper_bound)
@@ -95,8 +91,7 @@ population_mean = st.number_input("Population Mean", value=0.0)
 population_std = st.number_input("Population Standard Deviation", value=1.0, min_value=0.1)
 num_samples = st.slider("Number of Simulations", min_value=1, max_value=1000, value=10)
 confidence_level = st.slider("Confidence Level", min_value=0.80, max_value=0.99, value=0.95, step=0.01)
-test_type = st.selectbox("Test Type", options=['t', 'z'], index=0, format_func=lambda x: 'T-test' if x == 't' else 'Z-test')
 x_axis_frequency = st.slider("X-axis Label Frequency", min_value=1, max_value=num_samples, value=5)
 
 # Generate and plot the graphs
-plot_candlestick_intervals(num_samples, sample_size, population_mean, population_std, confidence_level, test_type, x_axis_frequency)
+plot_candlestick_intervals(num_samples, sample_size, population_mean, population_std, confidence_level, x_axis_frequency)
