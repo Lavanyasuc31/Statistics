@@ -233,7 +233,6 @@ with tabs[3]:
             st.write(f"P-Value: {p_value:.4f}")
 
             # Interpret results
-            #alpha = st.slider("Select Significance Level (α):", 0.01, 0.10, 0.05)
             if p_value < alpha:
                 st.write("Reject the null hypothesis. There is a significant association between the variables.")
             else:
