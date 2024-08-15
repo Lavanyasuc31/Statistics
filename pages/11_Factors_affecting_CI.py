@@ -24,6 +24,10 @@ def compute_confidence_interval(sample_mean, sample_size, population_std, confid
 # Streamlit UI
 st.title("Factors Affecting Confidence Interval")
 
+st.write("""
+Confidence intervals (CIs) are crucial in statistical inference. They provide a range of values that likely contain the true population parameter. This app allows you to explore how different factors affect the width and placement of a confidence interval.
+""")
+
 # Layout for input parameters and plot
 col1, col2 = st.columns(2)
 
@@ -48,24 +52,22 @@ with col2:
         st.subheader("Confidence Interval Visualization")
 
         fig, ax = plt.subplots(figsize=(12, 6))
-        bar_width = 0.4
-        bar_center = 1  # position of the bar on the x-axis
-
-        # Plot bars for lower and upper limits
-        ax.bar(bar_center - bar_width, lower_limit, width=bar_width, color='lightblue', label='Lower Limit', align='center')
-        ax.bar(bar_center + bar_width, upper_limit, width=bar_width, color='lightgreen', label='Upper Limit', align='center')
 
         # Plot margin of error line
-        ax.plot([bar_center - bar_width, bar_center + bar_width], [lower_limit, upper_limit], color='red', linestyle='--', linewidth=2, label='Margin of Error')
+        ax.plot([1, 1], [lower_limit, upper_limit], color='red', linestyle='--', linewidth=2, label='Margin of Error')
 
         # Plot sample mean
-        ax.plot(bar_center, sample_mean, 'o', color='black', label='Sample Mean')
+        ax.plot(1, sample_mean, 'o', color='black', label='Sample Mean', markersize=10)
+
+        # Plot bars for lower and upper limits
+        ax.bar(0.8, lower_limit, width=0.4, color='lightblue', label='Lower Limit')
+        ax.bar(1.2, upper_limit, width=0.4, color='lightgreen', label='Upper Limit')
 
         # Adding labels and title
         ax.set_title("Confidence Interval")
         ax.set_xlabel("Sample")
         ax.set_ylabel("Value")
-        ax.set_xticks([bar_center - bar_width, bar_center + bar_width])
+        ax.set_xticks([0.8, 1.2])
         ax.set_xticklabels(["Lower Limit", "Upper Limit"])
 
         # Display legend
@@ -81,4 +83,18 @@ with col2:
         bin_width = y_range / num_bins
         ax.set_ylim(y_min - bin_width, y_max + bin_width)
 
+        # Show grid lines for better readability
+        ax.grid(True, linestyle='--', alpha=0.7)
+
         st.pyplot(fig)
+
+        st.write("""
+        **Key Points:**
+        - The **Margin of Error** represents the range within which the true population parameter is likely to lie.
+        - The **Confidence Interval** is influenced by the sample size, population standard deviation, and confidence level.
+        - A higher confidence level results in a wider interval, reflecting greater uncertainty about the sample mean.
+        - A larger sample size or lower population standard deviation narrows the interval, providing a more precise estimate.
+
+        **Interactive Visualization:**
+        Adjust the sliders to see how changes in sample size, population standard deviation, and confidence level affect the width and placement of the confidence interval.
+        """)

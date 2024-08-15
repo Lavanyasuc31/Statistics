@@ -2,12 +2,11 @@ import streamlit as st
 import numpy as np
 from scipy import stats
 
-import streamlit as st
-
+# Define tabs
 tabs = st.tabs(["Introduction & Assumptions", "One-Sample t-Test", "Paired Sample t-Test", "Independent Two-Sample t-Test", "Interactive t-Test"])
 
 with tabs[0]:
-# Introduction
+    # Introduction
     st.header("What is a t-Test?")
     st.write(
         """
@@ -132,7 +131,6 @@ with tabs[1]:
     else:
         st.write("The result is not statistically significant. Fail to reject the null hypothesis.")
 
-
 with tabs[2]:
     # Paired Sample t-Test
     st.subheader("Paired Sample t-Test")
@@ -206,7 +204,6 @@ with tabs[2]:
     else:
         st.write("The result is not statistically significant. Fail to reject the null hypothesis.")
 
-
 with tabs[3]:
     # Independent Two-Sample t-Test
     st.subheader("Independent Two-Sample t-Test")
@@ -230,23 +227,23 @@ with tabs[3]:
         - $n_1$ = Sample size of the first sample
         - $n_2$ = Sample size of the second sample
         
-        **Degrees of Freedom (df):** Calculated based on sample sizes and variances.
+        **Degrees of Freedom (df):** \\( n_1 + n_2 - 2 \\)
         
         **Critical Value:** Based on the significance level (e.g., 0.05) and degrees of freedom.
         """
     )
 
     # Code for independent two-sample t-test
-    code_independent = '''
+    code_indep = '''
     import numpy as np
     from scipy import stats
 
-    # Sample data (two independent groups)
-    group1 = [23, 21, 18, 25, 30, 27, 26, 22, 24, 19]
-    group2 = [25, 23, 20, 27, 32, 29, 28, 24, 26, 21]
+    # Sample data
+    group1 = [24, 28, 30, 25, 27, 32, 29, 31, 26, 30]
+    group2 = [22, 20, 23, 24, 21, 19, 18, 20, 22, 21]
 
     # Calculate t_statistic and p_value
-    t_statistic, p_value = stats.ttest_ind(group1, group2)
+    t_statistic, p_value = stats.ttest_ind(group1, group2, equal_var=True)
 
     # Display results
     print(f"t-Statistic: {t_statistic:.4f}")
@@ -260,71 +257,84 @@ with tabs[3]:
         print("The result is not statistically significant. Fail to reject the null hypothesis.")
     '''
 
-    # Display code for independent two-sample t-test
+    # Display code for independent t-test
     st.write("### Code for Independent Two-Sample t-Test")
-    st.code(code_independent, language='python')
+    st.code(code_indep, language='python')
 
-    # Calculate and display results for independent two-sample t-test
-    group1 = [23, 21, 18, 25, 30, 27, 26, 22, 24, 19]
-    group2 = [25, 23, 20, 27, 32, 29, 28, 24, 26, 21]
+    # Calculate and display results for independent t-test
+    group1 = [24, 28, 30, 25, 27, 32, 29, 31, 26, 30]
+    group2 = [22, 20, 23, 24, 21, 19, 18, 20, 22, 21]
 
-    t_statistic_independent, p_value_independent = stats.ttest_ind(group1, group2)
+    t_statistic_indep, p_value_indep = stats.ttest_ind(group1, group2, equal_var=True)
 
     # Display results
     st.write("### Results for Independent Two-Sample t-Test")
-    st.write(f"t-Statistic: {t_statistic_independent:.4f}")
-    st.write(f"P-Value: {p_value_independent:.4f}")
+    st.write(f"t-Statistic: {t_statistic_indep:.4f}")
+    st.write(f"P-Value: {p_value_indep:.4f}")
 
     # Interpret results
     alpha = 0.05
-    if p_value_independent < alpha:
+    if p_value_indep < alpha:
         st.write("The result is statistically significant. Reject the null hypothesis.")
     else:
         st.write("The result is not statistically significant. Fail to reject the null hypothesis.")
 
-
 with tabs[4]:
-    st.title("Interactive t-Test")
+    # Interactive t-Test
+    st.header("Interactive t-Test")
 
-    # User inputs
-    st.header("Input your data:")
-    test_type = st.selectbox("Choose the type of t-test:", ["One-Sample t-Test", "Paired t-Test", "Independent Two-Sample t-Test"])
-    alpha = st.slider("Select Significance Level (α):", 0.01, 0.10, 0.05)
+    # One-Sample t-Test
+    st.subheader("One-Sample t-Test")
+    sample_size = st.slider("Sample Size", min_value=2, max_value=100, value=10)
+    sample_mean = st.number_input("Sample Mean", value=0.0)
+    population_mean = st.number_input("Population Mean", value=0.0)
+    sample_std_dev = st.number_input("Sample Standard Deviation", value=1.0)
 
-    # Depending on the test type, collect appropriate data
-    if test_type == "One-Sample t-Test":
-        population_mean = st.number_input("Enter the population mean:", value=1000)
-        sample_data = st.text_area("Enter your sample data (comma-separated):", "980, 995, 1005, 1000, 1007, 1010, 990, 995, 1002, 985, 1003, 997, 992, 1001, 998")
-        sample_data = list(map(float, sample_data.split(',')))
+    if st.button("Calculate One-Sample t-Test"):
+        t_statistic = (sample_mean - population_mean) / (sample_std_dev / np.sqrt(sample_size))
+        df = sample_size - 1
+        p_value = 2 * (1 - stats.t.cdf(np.abs(t_statistic), df=df))
 
-        # Perform one-sample t-test
-        t_statistic, p_value = stats.ttest_1samp(sample_data, population_mean)
+        st.write(f"t-Statistic: {t_statistic:.4f}")
+        st.write(f"P-Value: {p_value:.4f}")
 
-    elif test_type == "Independent Two-Sample t-Test":
-        sample_data_1 = st.text_area("Enter your first sample data (comma-separated):", "980, 995, 1005, 1000, 1007")
-        sample_data_2 = st.text_area("Enter your second sample data (comma-separated):", "1002, 985, 1003, 997, 992")
-        sample_data_1 = list(map(float, sample_data_1.split(',')))
-        sample_data_2 = list(map(float, sample_data_2.split(',')))
+        if p_value < 0.05:
+            st.write("The result is statistically significant. Reject the null hypothesis.")
+        else:
+            st.write("The result is not statistically significant. Fail to reject the null hypothesis.")
 
-        # Perform independent two-sample t-test
-        t_statistic, p_value = stats.ttest_ind(sample_data_1, sample_data_2)
+    # Paired Sample t-Test
+    st.subheader("Paired Sample t-Test")
+    data_before = st.text_input("Data Before (comma-separated)", "23, 21, 18, 25, 30, 27, 26, 22, 24, 19")
+    data_after = st.text_input("Data After (comma-separated)", "25, 23, 20, 27, 32, 29, 28, 24, 26, 21")
 
-    elif test_type == "Paired t-Test":
-        before_data = st.text_area("Enter 'before' data (comma-separated):", "980, 995, 1005, 1000, 1007")
-        after_data = st.text_area("Enter 'after' data (comma-separated):", "1002, 985, 1003, 997, 992")
-        before_data = list(map(float, before_data.split(',')))
-        after_data = list(map(float, after_data.split(',')))
+    if st.button("Calculate Paired t-Test"):
+        data_before = list(map(float, data_before.split(',')))
+        data_after = list(map(float, data_after.split(',')))
+        t_statistic_paired, p_value_paired = stats.ttest_rel(data_before, data_after)
 
-        # Perform paired t-test
-        t_statistic, p_value = stats.ttest_rel(before_data, after_data)
+        st.write(f"t-Statistic: {t_statistic_paired:.4f}")
+        st.write(f"P-Value: {p_value_paired:.4f}")
 
-    # Display results
-    st.header(f"{test_type} Results")
-    st.write(f"t-Statistic: {t_statistic:.2f}")
-    st.write(f"p-Value: {p_value:.4f}")
+        if p_value_paired < 0.05:
+            st.write("The result is statistically significant. Reject the null hypothesis.")
+        else:
+            st.write("The result is not statistically significant. Fail to reject the null hypothesis.")
 
-    # Interpretation of results
-    if p_value < alpha:
-        st.write("Reject the null hypothesis. There is evidence of a significant difference.")
-    else:
-        st.write("Fail to reject the null hypothesis. There is no evidence of a significant difference.")
+    # Independent Two-Sample t-Test
+    st.subheader("Independent Two-Sample t-Test")
+    group1 = st.text_input("Group 1 Data (comma-separated)", "24, 28, 30, 25, 27, 32, 29, 31, 26, 30")
+    group2 = st.text_input("Group 2 Data (comma-separated)", "22, 20, 23, 24, 21, 19, 18, 20, 22, 21")
+
+    if st.button("Calculate Independent Two-Sample t-Test"):
+        group1 = list(map(float, group1.split(',')))
+        group2 = list(map(float, group2.split(',')))
+        t_statistic_indep, p_value_indep = stats.ttest_ind(group1, group2, equal_var=True)
+
+        st.write(f"t-Statistic: {t_statistic_indep:.4f}")
+        st.write(f"P-Value: {p_value_indep:.4f}")
+
+        if p_value_indep < 0.05:
+            st.write("The result is statistically significant. Reject the null hypothesis.")
+        else:
+            st.write("The result is not statistically significant. Fail to reject the null hypothesis.")

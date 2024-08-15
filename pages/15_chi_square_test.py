@@ -1,7 +1,9 @@
 import streamlit as st
 import numpy as np
 from scipy import stats
+import matplotlib.pyplot as plt
 
+# Create tabs for different sections
 tabs = st.tabs(["Introduction & Assumptions", "Chi-Square Test of Independence", "Chi-Square Goodness of Fit", "Interactive Chi-Square Test"])
 
 with tabs[0]:
@@ -103,9 +105,9 @@ with tabs[1]:
     # Interpret results
     alpha = 0.05
     if p_value < alpha:
-        st.write("The result is statistically significant. Reject the null hypothesis.")
+        st.success("The result is statistically significant. Reject the null hypothesis.")
     else:
-        st.write("The result is not statistically significant. Fail to reject the null hypothesis.")
+        st.info("The result is not statistically significant. Fail to reject the null hypothesis.")
 
 with tabs[2]:
     # Chi-Square Goodness of Fit Test
@@ -177,14 +179,15 @@ with tabs[2]:
     # Interpret results
     alpha = 0.05
     if p_value < alpha:
-        st.write("The result is statistically significant. Reject the null hypothesis.")
+        st.success("The result is statistically significant. Reject the null hypothesis.")
     else:
-        st.write("The result is not statistically significant. Fail to reject the null hypothesis.")
+        st.info("The result is not statistically significant. Fail to reject the null hypothesis.")
 
 with tabs[3]:
-    
+    # Interactive Chi-Square Test
     st.title("Interactive Chi-Square Test")
 
+    # User selects type of Chi-Square test
     test_type = st.selectbox("Choose the type of Chi-Square test:", ["Chi-Square Test of Independence", "Chi-Square Goodness of Fit"])
     alpha = st.slider("Select Significance Level (α):", 0.01, 0.10, 0.05)
 
@@ -222,47 +225,88 @@ with tabs[3]:
             st.subheader("Contingency Table (Observed Frequencies)")
             st.write(observed)
             
-            st.subheader("Contingency Table (Expected Frequencies)")
+            st.subheader("Expected Frequencies")
             st.write(expected)
-
-            # Perform Chi-Square Test
-            chi2_statistic, p_value, _, _ = stats.chi2_contingency(observed)
             
+            # Perform Chi-Square test
+            chi2_statistic, p_value, _, _ = stats.chi2_contingency(observed)
+            critical_value = stats.chi2.ppf(1 - alpha, (rows - 1) * (cols - 1))
+
+            # Display results
             st.subheader("Results")
             st.write(f"Chi-Square Statistic: {chi2_statistic:.4f}")
             st.write(f"P-Value: {p_value:.4f}")
-
+            st.write(f"Critical Value (α={alpha}): {critical_value:.4f}")
+            
             # Interpret results
             if p_value < alpha:
-                st.write("Reject the null hypothesis. There is a significant association between the variables.")
+                st.success("The result is statistically significant. Reject the null hypothesis.")
             else:
-                st.write("Fail to reject the null hypothesis. There is no significant association between the variables.")
-        else:
-            st.error("Ensure all rows have the correct number of values.")
+                st.info("The result is not statistically significant. Fail to reject the null hypothesis.")
+
+            # Option to visualize observed vs expected
+            if st.checkbox("Visualize Observed vs Expected Frequencies"):
+                fig, ax = plt.subplots()
+                indices = np.arange(rows * cols)
+                observed_flat = observed.flatten()
+                expected_flat = expected.flatten()
+                
+                ax.bar(indices - 0.2, observed_flat, 0.4, label="Observed")
+                ax.bar(indices + 0.2, expected_flat, 0.4, label="Expected")
+                
+                ax.set_xlabel("Cells")
+                ax.set_ylabel("Frequencies")
+                ax.set_title("Observed vs Expected Frequencies")
+                ax.legend()
+                
+                st.pyplot(fig)
 
     elif test_type == "Chi-Square Goodness of Fit":
-        st.subheader("Enter your observed and expected frequencies:")
-        observed = st.text_area("Enter observed frequencies (comma-separated):", "")
-        expected = st.text_area("Enter expected frequencies (comma-separated):", "")
+        # User input for the Chi-Square Goodness of Fit Test
+        st.header("Enter your observed and expected frequencies:")
+        categories = st.number_input("Number of categories:", min_value=2, max_value=10, value=3)
+
+        observed = st.text_input("Enter observed frequencies (comma-separated):", "")
+        expected = st.text_input("Enter expected frequencies (comma-separated):", "")
         
         if observed and expected:
             try:
-                observed = np.array(list(map(float, observed.split(','))))
-                expected = np.array(list(map(float, expected.split(','))))
-
-                if not np.isclose(np.sum(observed), np.sum(expected)):
-                    st.error("The sum of observed frequencies must match the sum of expected frequencies.")
+                observed_data = np.array(list(map(float, observed.split(','))))
+                expected_data = np.array(list(map(float, expected.split(','))))
+                
+                if len(observed_data) != categories or len(expected_data) != categories:
+                    st.error(f"Both observed and expected frequencies must have {categories} values.")
                 else:
-                    chi2_statistic, p_value = stats.chisquare(observed, f_exp=expected)
+                    # Perform Chi-Square Goodness of Fit test
+                    chi2_statistic, p_value = stats.chisquare(observed_data, f_exp=expected_data)
+                    critical_value = stats.chi2.ppf(1 - alpha, categories - 1)
+
+                    # Display results
                     st.subheader("Results")
                     st.write(f"Chi-Square Statistic: {chi2_statistic:.4f}")
                     st.write(f"P-Value: {p_value:.4f}")
-
+                    st.write(f"Critical Value (α={alpha}): {critical_value:.4f}")
+                    
+                    # Interpret results
                     if p_value < alpha:
-                        st.write("Reject the null hypothesis. The observed frequencies do not match the expected frequencies.")
+                        st.success("The result is statistically significant. Reject the null hypothesis.")
                     else:
-                        st.write("Fail to reject the null hypothesis. The observed frequencies match the expected frequencies.")
+                        st.info("The result is not statistically significant. Fail to reject the null hypothesis.")
+
+                    # Option to visualize observed vs expected
+                    if st.checkbox("Visualize Observed vs Expected Frequencies"):
+                        fig, ax = plt.subplots()
+                        indices = np.arange(categories)
+                        
+                        ax.bar(indices - 0.2, observed_data, 0.4, label="Observed")
+                        ax.bar(indices + 0.2, expected_data, 0.4, label="Expected")
+                        
+                        ax.set_xlabel("Categories")
+                        ax.set_ylabel("Frequencies")
+                        ax.set_title("Observed vs Expected Frequencies")
+                        ax.legend()
+                        
+                        st.pyplot(fig)
+
             except ValueError:
-                st.error("Invalid input. Ensure all entries are numbers and separated by commas.")
-        else:
-            st.error("Please enter both observed and expected frequencies.")
+                st.error("Invalid input. Ensure all entries are numbers.")
