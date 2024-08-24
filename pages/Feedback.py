@@ -1,36 +1,55 @@
 import streamlit as st
+from streamlit_extras.let_it_rain import rain
+from streamlit_extras.mention import mention
 
-# Page Title
-st.title("Feedback Form")
-
-# Introduction
-st.write(
+# Set a custom background image
+st.markdown(
     """
-    We value your feedback! Please fill out the form below to help us improve.
-    """
+    <style>
+    .stApp {
+        background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+    }
+    .main-header {
+        color: #ffffff;
+        font-family: 'Comic Sans MS', sans-serif;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .fun-button {
+        background-color: #ff6347;
+        color: white;
+        font-weight: bold;
+        padding: 0.5em;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    .stTextInput>div>div>input, .stTextArea>div>textarea, .stSelectbox>div>div>div>input {
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #333333;
+    }
+    </style>
+    """, unsafe_allow_html=True
 )
 
-# User Information
-st.header("Personal Information")
-name = st.text_input("Name:")
-email = st.text_input("Email:")
+# Add some rain effect for fun
+# rain(emoji="✨", font_size=10, falling_speed=5, animation_length="infinite")
 
-# Feedback
-st.header("Your Feedback")
-rating = st.slider("How would you rate your experience?", 1, 5, 3)
-suggestions = st.text_area("Any suggestions for improvement?")
+# Title with some flair
+st.markdown("<h1 class='main-header'>We Value Your Feedback! 🎉</h1>", unsafe_allow_html=True)
+st.write("Your feedback helps us to improve and create even more amazing experiences!")
 
-# Submit Button
-if st.button("Submit Feedback"):
-    if name and email:
-        st.success(f"Thank you for your feedback, {name}!")
-        # Here, you could add code to save the feedback to a database or send it via email
-    else:
-        st.error("Please fill in all the required fields.")
+# Feedback form
+with st.form("feedback_form"):
+    name = st.text_input("What's your name? 😊")
+    feedback_type = st.selectbox("What kind of feedback do you have?", ["Praise 🙌", "Suggestion 💡", "Issue 🚨", "Other ✨"])
+    feedback_message = st.text_area("Share your thoughts with us! 💬")
+    rating = st.slider("How would you rate your experience?", 1, 5, 3)
 
-# Optional: Display the feedback
-st.header("Submitted Feedback")
-st.write(f"Name: {name}")
-st.write(f"Email: {email}")
-st.write(f"Rating: {rating}")
-st.write(f"Suggestions: {suggestions}")
+    submitted = st.form_submit_button("Send Feedback")
+    if submitted:
+        st.success("Thank you for your feedback! 🌟")
+        st.balloons()
+
+# Fun extra mentions or links
+mention(label="Check out our other cool projects!", icon="💻", url="https://github.com/NiShAK-uMAri")
