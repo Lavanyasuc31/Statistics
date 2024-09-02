@@ -45,7 +45,6 @@ def plot_lognorm_distributions(mu, sigma):
     ax[0].set_xlabel('x')
     ax[0].set_ylabel('Probability Density')
     ax[0].legend(loc='upper right')
-    ax[0].grid(True)
 
     # Plot CDF
     sns.lineplot(x=x_lognorm, y=cdf_lognorm, ax=ax[1], color='orange', label='CDF', linestyle='-.')
@@ -53,7 +52,6 @@ def plot_lognorm_distributions(mu, sigma):
     ax[1].set_xlabel('x')
     ax[1].set_ylabel('Cumulative Probability')
     ax[1].legend(loc='lower right')
-    ax[1].grid(True)
 
     st.pyplot(fig)
 

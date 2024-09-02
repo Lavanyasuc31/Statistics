@@ -42,15 +42,15 @@ def plot_clt(population_type, sample_size, num_samples):
     
     # Plot the population distribution
     sns.histplot(population, bins=30, kde=True, color='blue', ax=axes[0])
-    axes[0].set_title(f'{population_type} Distribution (Population)\n({population_label})', fontsize=16)
-    axes[0].set_xlabel('Value', fontsize=14)
-    axes[0].set_ylabel('Frequency', fontsize=14)
+    axes[0].set_title(f'{population_type} Distribution (Population)')
+    axes[0].set_xlabel('Value')
+    axes[0].set_ylabel('Frequency')
     
     # Plot the distribution of sample means
     sns.histplot(sample_means, bins=30, kde=True, color='green', ax=axes[1])
-    axes[1].set_title('Distribution of Sample Means\n(Central Limit Theorem)', fontsize=16)
-    axes[1].set_xlabel('Sample Mean', fontsize=14)
-    axes[1].set_ylabel('Frequency', fontsize=14)
+    axes[1].set_title('Distribution of Sample Means')
+    axes[1].set_xlabel('Sample Mean')
+    axes[1].set_ylabel('Frequency')
     
     plt.tight_layout()
     st.pyplot(fig)

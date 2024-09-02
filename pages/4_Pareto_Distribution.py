@@ -24,7 +24,7 @@ def plot_pareto_distribution(alpha):
     """
     x = np.linspace(1, 5, 1000)  # Pareto distribution is defined for x >= 1
     
-    fig, ax = plt.subplots(1, 2, figsize=(14, 6), constrained_layout=True)
+    fig, ax = plt.subplots(1, 2, figsize=(14, 6), constrained_layout=False)
 
     # Plot PDFs
     y_pdf = pareto.pdf(x, alpha)
@@ -33,7 +33,6 @@ def plot_pareto_distribution(alpha):
     ax[0].set_ylabel('Probability Density (PDF)')
     ax[0].legend(loc='upper right')
     ax[0].set_title('Pareto Distribution PDF')
-    ax[0].grid(True)
 
     # Plot CDFs
     y_cdf = pareto.cdf(x, alpha)
@@ -42,7 +41,6 @@ def plot_pareto_distribution(alpha):
     ax[1].set_ylabel('Cumulative Distribution Function (CDF)')
     ax[1].legend(loc='lower right')
     ax[1].set_title('Pareto Distribution CDF')
-    ax[1].grid(True)
 
     st.pyplot(fig)
 

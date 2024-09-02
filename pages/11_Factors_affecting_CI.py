@@ -84,7 +84,7 @@ with col2:
         ax.set_ylim(y_min - bin_width, y_max + bin_width)
 
         # Show grid lines for better readability
-        ax.grid(True, linestyle='--', alpha=0.7)
+        # ax.grid(False, linestyle='--', alpha=0.7)
 
         st.pyplot(fig)
 

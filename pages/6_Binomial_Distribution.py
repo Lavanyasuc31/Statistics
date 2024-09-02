@@ -32,18 +32,19 @@ def plot_binomial_distribution(n, p):
     ax[0].set_ylabel('Probability Mass (PMF)')
     ax[0].set_title(f'Binomial Distribution PMF (n={n}, p={p})')
     ax[0].set_xticks(x)  # Set x-axis ticks to integers
-    ax[0].grid(True)
 
     # Plot CDF
     cdf_y = binom.cdf(x, n, p)
-    sns.lineplot(x=x, y=cdf_y, ax=ax[1], color='blue', marker='o')
-    ax[1].set_xlabel('Number of Successes (k)')
+    ax[1].step(x, cdf_y, where='mid', color='blue', label=f'p={p}')
+    ax[1].set_xlabel('Number of Successes')
     ax[1].set_ylabel('Cumulative Distribution Function (CDF)')
+    ax[1].legend(loc='lower right')
     ax[1].set_title(f'Binomial Distribution CDF (n={n}, p={p})')
     ax[1].set_xticks(x)  # Set x-axis ticks to integers
-    ax[1].grid(True)
+    ax[1].set_xticklabels([str(int(val)) for val in x])  # Ensure labels are integers
 
     st.pyplot(fig)
+
 
 # Streamlit app
 st.header('Interactive Binomial Distribution')

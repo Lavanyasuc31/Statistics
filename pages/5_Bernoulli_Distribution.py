@@ -22,7 +22,6 @@ def plot_bernoulli_distribution(p):
     Plot the Bernoulli distribution curves for a specific probability p.
     """
     x = np.array([0, 1])
-    bar_width = 0.4  # Width of each bar
 
     fig, ax = plt.subplots(1, 2, figsize=(14, 6), constrained_layout=True)
 
@@ -34,17 +33,16 @@ def plot_bernoulli_distribution(p):
     ax[0].set_title(f'Bernoulli Distribution PMF (p={p})')
     ax[0].set_xticks(x)  # Set x-axis ticks to integers
     ax[0].set_xticklabels(['0', '1'])  # Ensure labels are 0 and 1
-    ax[0].grid(True)
 
-    # Plot CDF
+    # Plot CDF 
     cdf_y = bernoulli.cdf(x, p)
-    sns.lineplot(x=x, y=cdf_y, ax=ax[1], color='blue', marker='o')
+    ax[1].step(x, cdf_y, where='mid', color='blue', label=f'p={p}')
     ax[1].set_xlabel('Outcome (x)')
     ax[1].set_ylabel('Cumulative Distribution Function (CDF)')
+    ax[1].legend(loc='lower right')
     ax[1].set_title(f'Bernoulli Distribution CDF (p={p})')
     ax[1].set_xticks(x)  # Set x-axis ticks to integers
     ax[1].set_xticklabels(['0', '1'])  # Ensure labels are 0 and 1
-    ax[1].grid(True)
 
     st.pyplot(fig)
 

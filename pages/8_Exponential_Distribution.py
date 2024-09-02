@@ -30,20 +30,17 @@ def plot_exponential_distribution(lambda_):
 
     # Plot PDF
     pdf_y = expon.pdf(x, scale=1/lambda_)
-    sns.lineplot(x=x, y=pdf_y, ax=ax[0], color='blue', lw=2)
-    ax[0].fill_between(x, pdf_y, color='blue', alpha=0.3)
+    ax[0].plot(x, pdf_y, label=f'λ={lambda_}', color='blue')
     ax[0].set_xlabel('Time (x)')
     ax[0].set_ylabel('Probability Density (PDF)')
     ax[0].set_title(f'Exponential Distribution PDF (λ={lambda_})')
-    ax[0].grid(True)
 
     # Plot CDF
     cdf_y = expon.cdf(x, scale=1/lambda_)
-    sns.lineplot(x=x, y=cdf_y, ax=ax[1], color='green', lw=2, marker='o')
+    ax[1].plot(x, cdf_y, label=f'λ={lambda_}', color='green')
     ax[1].set_xlabel('Time (x)')
     ax[1].set_ylabel('Cumulative Distribution Function (CDF)')
     ax[1].set_title(f'Exponential Distribution CDF (λ={lambda_})')
-    ax[1].grid(True)
 
     st.pyplot(fig)
 

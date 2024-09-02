@@ -57,7 +57,6 @@ def plot_candlestick_intervals(num_samples, sample_size, population_mean, popula
     ax.set_xticks(range(0, num_samples, x_axis_frequency))
     ax.set_xticklabels(range(1, num_samples + 1, x_axis_frequency))
     ax.legend()
-    plt.grid(True)
     st.pyplot(fig)
 
     # Display the interval data

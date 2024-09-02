@@ -34,23 +34,23 @@ def plot_poisson_distribution(lambda_):
     ax[0].set_xlabel('Number of Events (x)')
     ax[0].set_ylabel('Probability Mass Function (PMF)')
     ax[0].set_title(f'Poisson Distribution PMF (λ={lambda_})')
-    ax[0].grid(True)
 
     # Plot CDF
     cdf_y = poisson.cdf(x, lambda_)
-    sns.lineplot(x=x, y=cdf_y, ax=ax[1], color='green', marker='o')
+    ax[1].step(x, cdf_y, where='mid', color='green')
     ax[1].set_xlabel('Number of Events (x)')
     ax[1].set_ylabel('Cumulative Distribution Function (CDF)')
     ax[1].set_title(f'Poisson Distribution CDF (λ={lambda_})')
-    ax[1].grid(True)
+    ax[1].set_xticks(x)
+    ax[1].set_xticklabels([str(int(val)) for val in x])
 
     st.pyplot(fig)
 
 # Streamlit app
 st.header('Interactive Poisson Distribution')
 
-# Slider for lambda value
-lambda_value = st.slider("Rate of Occurrence (λ)", min_value=0.1, max_value=15.0, value=1.0, step=0.1)
+# Slider for lambda value (now only discrete integers)
+lambda_value = st.slider("Rate of Occurrence (λ)", min_value=1, max_value=15, value=1, step=1)
 
 # Plot the distribution based on user input
 plot_poisson_distribution(lambda_value)

@@ -43,7 +43,6 @@ def plot_pdf(mu1, sigma1, mu2, sigma2):
     ax[0].set_xlabel('x')
     ax[0].set_ylabel('Probability Density')
     ax[0].legend(loc='upper left')
-    ax[0].grid(True)
 
     # CDF Plot
     cdf1 = norm.cdf(x, mu1, sigma1)
@@ -54,7 +53,6 @@ def plot_pdf(mu1, sigma1, mu2, sigma2):
     ax[1].set_xlabel('x')
     ax[1].set_ylabel('Cumulative Probability')
     ax[1].legend(loc='lower right')
-    ax[1].grid(True)
 
     st.pyplot(fig)
 
