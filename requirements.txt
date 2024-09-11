@@ -4,3 +4,5 @@ numpy
 scipy
 matplotlib
 seaborn
+email
+streamlit-extras
