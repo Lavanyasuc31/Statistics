@@ -85,7 +85,7 @@ Launch the app in your browser and start interacting with the various statistica
 
 ## 🔮 **Future Enhancements**
 
-- 📈 **More Distributions**: Planning to add Binomial, Exponential, and more distributions to the app.
+- 📈 **More test**: Planning to add ANOVA and more tests to the app.
 - 🧠 **Machine Learning Insights**: Including more connections between statistical concepts and their applications in ML.
 - 🌍 **Multilingual Support**: Making the app accessible in multiple languages for learners worldwide.
 
