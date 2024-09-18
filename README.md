@@ -101,11 +101,6 @@ Want to add new features or improve the existing ones? We’d love your contribu
 
 We’re all about collaborative learning, so feel free to contribute!
 
----
-
-## 💬 **Let’s Connect!**
-
-- LinkedIn: [LinkedIn]()
 
 ---
 
