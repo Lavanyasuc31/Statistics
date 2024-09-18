@@ -1,4 +1,3 @@
-Here's a fun and engaging README file for your **Statistics Notes** project aimed at helping users understand key concepts in statistics!
 
 # Homepage:
 
