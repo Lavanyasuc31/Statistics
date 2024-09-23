@@ -41,9 +41,9 @@ def send_email(name, feedback_type, feedback_message, rating):
         receiver_email = "vijitsingh95@gmail.com"  # Replace with your email
         password = "jqgl vbir egra neod"  # Replace with your email password or app-specific password
 
-        sender_email1 = "knisha987650@gmail.com"
-        receiver_email1 = "knisha987650@gmail.com"
-        password1 = "qzed esub spty maox"
+        # sender_email1 = "knisha987650@gmail.com"
+        # receiver_email1 = "knisha987650@gmail.com"
+        # password1 = "qzed esub spty maox"
 
         # Create a multipart message
         msg = MIMEMultipart()
@@ -52,10 +52,10 @@ def send_email(name, feedback_type, feedback_message, rating):
         msg['Subject'] = "New Feedback Received 🎉"
 
         # 2nd mail
-        msg1 = MIMEMultipart()
-        msg1['From'] = sender_email1
-        msg1['To'] = receiver_email1
-        msg1['Subject'] = "New Feedback Received 🎉"
+        # msg1 = MIMEMultipart()
+        # msg1['From'] = sender_email1
+        # msg1['To'] = receiver_email1
+        # msg1['Subject'] = "New Feedback Received 🎉"
 
         # Create the email body
         body = f"""
@@ -71,21 +71,21 @@ def send_email(name, feedback_type, feedback_message, rating):
         msg.attach(MIMEText(body, 'plain'))
 
         # 2nd mail
-        msg1.attach(MIMEText(body, 'plain'))
+        # msg1.attach(MIMEText(body, 'plain'))
 
         # Set up the server and send the email
         server = smtplib.SMTP('smtp.gmail.com', 587)
-        server1 = smtplib.SMTP('smtp.gmail.com', 587)
+        # server1 = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
-        server1.starttls()
+        # server1.starttls()
         server.login(sender_email, password)
-        server1.login(sender_email1, password1)
+        # server1.login(sender_email1, password1)
         text = msg.as_string()
-        text1 = msg.as_string()
+        # text1 = msg.as_string()
         server.sendmail(sender_email, receiver_email, text)
-        server1.sendmail(sender_email1, receiver_email1, text1)
+        # server1.sendmail(sender_email1, receiver_email1, text1)
         server.quit()
-        server1.quit()
+        # server1.quit()
         return True
     except Exception as e:
         print(f"Failed to send email: {e}")
